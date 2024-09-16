@@ -20,7 +20,7 @@ class VacancyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(vacancy: Vacancy) {
         vacancyAndCity.text = "${vacancy.name}, ${vacancy.area}"
-        companyName.text = vacancy.name
+        companyName.text = vacancy.employer
         salary.text = vacancy.salary
 
         Glide.with(itemView)

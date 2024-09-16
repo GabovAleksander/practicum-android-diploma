@@ -10,14 +10,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="@dimen/size_20dp" />
+        app:layout_constraintGuide_begin="@dimen/size_16dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/rightBorder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="@dimen/size_20dp" />
+        app:layout_constraintGuide_end="@dimen/size_16dp" />
 
     <LinearLayout
         android:id="@+id/titlePlace"
@@ -44,7 +44,7 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/size_26dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/margin_8dp"
+            android:layout_marginStart="@dimen/margin_16dp"
             android:layout_weight="1"
             android:text="@string/select_place" />
 
@@ -78,6 +78,7 @@
         android:id="@+id/arrowForwardCountry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clickable="true"
         android:src="@drawable/ic_arrow_forward_24px"
         app:layout_constraintBottom_toBottomOf="@id/boxCountry"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
@@ -88,6 +89,7 @@
         android:id="@+id/crossCountry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clickable="true"
         android:src="@drawable/ic_close_24px"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/boxCountry"
@@ -133,6 +135,9 @@
         android:id="@+id/arrowForwardRegion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
         android:src="@drawable/ic_arrow_forward_24px"
         app:layout_constraintBottom_toBottomOf="@id/boxRegion"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
@@ -143,6 +148,7 @@
         android:id="@+id/crossRegion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clickable="true"
         android:src="@drawable/ic_close_24px"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/boxRegion"

@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.filter.ui
+package ru.practicum.android.diploma.filter.ui.chooseaplaceofwork
 
 import android.os.Bundle
 import android.text.Editable
@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentChoosingAPlaceOfWorkBinding
-import ru.practicum.android.diploma.filter.ui.viewmodel.LocationViewModel
+import ru.practicum.android.diploma.filter.ui.chooseaplaceofwork.viewmodel.LocationViewModel
 import ru.practicum.android.diploma.global.util.CustomFragment
 
 class ChoosingAPlaceOfWorkFragment : CustomFragment<FragmentChoosingAPlaceOfWorkBinding>() {
@@ -30,13 +30,13 @@ class ChoosingAPlaceOfWorkFragment : CustomFragment<FragmentChoosingAPlaceOfWork
         }
 
         binding.arrowForwardCountry.setOnClickListener {
-//            val action = переход на экран выбора стран
-//            findNavController().navigate(action)
+            val action = ChoosingAPlaceOfWorkFragmentDirections.actionChoosingAPlaceOfWorkFragmentToCountryFragment()
+            findNavController().navigate(action)
         }
 
         binding.arrowForwardRegion.setOnClickListener {
-//            val action = переход на экран выбора регионов
-//            findNavController().navigate(action)
+            val action = ChoosingAPlaceOfWorkFragmentDirections.actionChoosingAPlaceOfWorkFragmentToAreaSelectFragment()
+            findNavController().navigate(action)
         }
 
         binding.edCountry.addTextChangedListener(object : TextWatcher {

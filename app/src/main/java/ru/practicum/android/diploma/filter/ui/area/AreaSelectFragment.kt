@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.filter.ui.area
 
 import android.content.Context
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -104,7 +105,8 @@ class AreaSelectFragment : CustomFragment<FragmentAreaSelectBinding>() {
             areaList.isVisible = false
             progressBar.isVisible = false
             windowMessage.isVisible = true
-            textMessage.setText(R.string.failed_to_get_list)
+            textMessage.setText(getText(R.string.failed_to_get_list))
+            textMessage.gravity = Gravity.CENTER
             imageMessage.setImageResource(R.drawable.image_magic_carpet)
             textMessage.isVisible = true
         }

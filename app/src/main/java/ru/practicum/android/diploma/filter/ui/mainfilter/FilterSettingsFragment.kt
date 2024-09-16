@@ -57,7 +57,11 @@ class FilterSettingsFragment : CustomFragment<FragmentFilterSettingsBinding>() {
         }
 
         binding.salaryEditText.doOnTextChanged { text, _, _, _ ->
-            salary = text.toString().toInt()
+            salary = try {
+                text?.toString()?.toInt()
+            } catch (e: NumberFormatException) {
+                null
+            }
             val hasText = text?.isNotBlank() == true
             binding.salaryInputLayout.defaultHintTextColor = setColorState(hasText)
         }
