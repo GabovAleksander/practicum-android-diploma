@@ -26,8 +26,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:foreground="?attr/selectableItemBackgroundBorderless"
-            app:tint="@color/background_reverse"
-            android:src="@drawable/ic_filter_off__24px" />
+            android:src="@drawable/ic_filter_off__24px"
+            app:tint="@color/background_reverse" />
     </LinearLayout>
 
     <FrameLayout
@@ -105,13 +105,14 @@
             android:id="@+id/vacancyList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="@dimen/size_24dp"
+            android:paddingBottom="80dp"
             android:visibility="visible"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:paddingTop="@dimen/size_24dp"
-            android:clipToPadding="false"
             tools:listitem="@layout/vacancy_list_item" />
 
         <TextView
@@ -134,7 +135,7 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:visibility="visible">
 
-        <ProgressBar
+            <ProgressBar
                 android:layout_width="@dimen/progress_bar_36dp"
                 android:layout_height="@dimen/progress_bar_36dp"
                 android:layout_gravity="center"
@@ -149,5 +150,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:indeterminateTint="@color/blue"
-        android:visibility="visible" />
+        android:visibility="gone" />
+
 </LinearLayout>

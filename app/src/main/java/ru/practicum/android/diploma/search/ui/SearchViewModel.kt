@@ -44,7 +44,7 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
     }
 
     fun search(input: String, page: Int) {
-        if (!input.isNullOrEmpty()) {
+        if (input.isNotEmpty()) {
             if (page == 0) {
                 renderState(SearchState.Loading)
             }

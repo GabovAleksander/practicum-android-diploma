@@ -179,12 +179,9 @@ class SearchFragment : CustomFragment<FragmentSearchBinding>() {
     private fun setStateLoading() {
         hideKeyboard()
         with(binding) {
-            vacancyList.isVisible = false
-            progressBar.isVisible = true
-            recyclerProgressBar.isVisible = false
-            windowMessage.isVisible = false
-            countVacancies.isVisible = false
             vacancyListLayout.isVisible = false
+            progressBar.isVisible = true
+            windowMessage.isVisible = false
         }
     }
 
