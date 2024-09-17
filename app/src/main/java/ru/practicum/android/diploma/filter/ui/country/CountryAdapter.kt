@@ -37,7 +37,7 @@ class CountryAdapter : RecyclerView.Adapter<CountryViewHolder>() {
             filteredList.addAll(countryList)
         } else {
             for (item in countryList) {
-                if (item.name?.contains(text, ignoreCase = true) == true) {
+                if (item.name.contains(text, ignoreCase = true) == true) {
                     filteredList.add(item)
                 }
             }

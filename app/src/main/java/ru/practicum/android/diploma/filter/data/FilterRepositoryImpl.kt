@@ -1,58 +1,57 @@
 package ru.practicum.android.diploma.filter.data
 
 import ru.practicum.android.diploma.filter.domain.api.FilterRepository
-import ru.practicum.android.diploma.filter.domain.model.Area
 import ru.practicum.android.diploma.filter.domain.model.Country
-import ru.practicum.android.diploma.filter.domain.model.Industry
+import ru.practicum.android.diploma.filter.domain.model.FilterStatus
+import ru.practicum.android.diploma.filter.domain.model.Location
+import ru.practicum.android.diploma.filter.domain.model.PlaceWork
+import ru.practicum.android.diploma.global.sharedpreferences.SharedPreferencesFilter
 
-class FilterRepositoryImpl : FilterRepository {
-    private var country: Country? = null
-    private var area: Area? = null
-    private var salary: Int? = null
-    private var onlyWithSalary: Boolean = false
-    private var industry: Industry? = null
+class FilterRepositoryImpl(private val sharedPreferencesFilter: SharedPreferencesFilter) :
+    FilterRepository {
+    private var filterStatus: FilterStatus = FilterStatus(null, null, null, null, false)
 
-    override fun getCountry(): Country? {
-        return country
+    private var listCountries = mutableListOf<Country>()
+    private var listLocation = mutableListOf<Location>()
+
+    override fun getFilterStatus(): FilterStatus {
+        return filterStatus
     }
 
-    override fun setCountry(country: Country?) {
-        this.country = country
-    }
-
-    override fun getArea(): Area? {
-        return area
-    }
-
-    override fun setArea(area: Area?) {
-        this.area = area
-    }
-
-    override fun getSalary(): Int? {
-        return salary
-    }
-
-    override fun setSalary(salary: Int?) {
-        this.salary = salary
-    }
-
-    override fun getIndustry(): Industry? {
-        return industry
-    }
-
-    override fun setIndustry(industry: Industry?) {
-        this.industry = industry
-    }
-
-    override fun setOnlyWithSalary(status: Boolean) {
-        onlyWithSalary = status
+    override fun setFilterStatus(filterStatus: FilterStatus) {
+        val stat = FilterStatus(
+            filterStatus.country,
+            filterStatus.area,
+            filterStatus.industry,
+            filterStatus.salary,
+            filterStatus.onlyWithSalary
+        )
+        stat.isFilterActive = filterStatus.isFilterActive
+        this.filterStatus = stat
     }
 
     override fun clearFilters() {
-        country = null
-        area = null
-        salary = null
-        industry = null
+        filterStatus = FilterStatus(null, null, null, null, false)
+    }
+
+    override fun saveFilterToSharedPreferences(filterStatus: FilterStatus) {
+        sharedPreferencesFilter.saveFilterState(filterStatus)
+    }
+
+    override fun loadFilterFromSharedPreferences(): FilterStatus {
+        return sharedPreferencesFilter.getFilterState()
+    }
+
+    override fun setListPlaceWork(listPlaceWork: PlaceWork) {
+        listPlaceWork.areas?.let { listLocation.addAll(it) }
+        listPlaceWork.countries?.let { listCountries.addAll(it) }
+    }
+
+    override fun getListPlaceWork(): PlaceWork {
+        return PlaceWork(
+            countries = listCountries,
+            areas = listLocation
+        )
     }
 
 }

@@ -19,7 +19,7 @@ class RootActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.vacancyFragment -> binding.navigationView.isVisible = false
+                R.id.vacancyFragment, R.id.filterIndustryFragment -> binding.navigationView.isVisible = false
                 else -> binding.navigationView.isVisible = true
             }
         }

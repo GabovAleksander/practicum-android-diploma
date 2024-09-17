@@ -40,7 +40,7 @@
         app:layout_constraintTop_toTopOf="@id/btnArrowForwardPlace">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editText"
+            android:id="@+id/editTextPlaceWork"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_60dp"
             android:background="@android:color/transparent"

@@ -38,7 +38,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/llCountiresNothingFoundPlaceholder"
+        android:id="@+id/llCountriesNothingFoundPlaceholder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dm_172dp"
@@ -63,5 +63,13 @@
         android:layout_marginTop="@dimen/size_20dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/country_item" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="@dimen/progress_bar_36dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/blue"
+        android:visibility="gone" />
 
 </LinearLayout>

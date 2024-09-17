@@ -25,7 +25,7 @@ val domainModule = module {
     }
 
     factory<FilterInteractor> {
-        FilterInteractorImpl(get())
+        FilterInteractorImpl(get(), get())
     }
 
     single<CountryInteractor> {

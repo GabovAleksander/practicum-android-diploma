@@ -60,6 +60,8 @@
     <string name="founded_vacancies">Найдено %1$s %2$s</string>
     <string name="check_the_internet">Проверьте подключение к интернету</string>
     <string name="error">Произошла ошибка</string>
+    <string name="choose_industry">Выбор отрасли</string>
+    <string name="enter_industry">Введите отрасль</string>
     <string name="select_country">Выбор страны</string>
     <string name="unable_to_retrieve_countires">Не удалось получить\nсписок стран</string>
 </resources>
