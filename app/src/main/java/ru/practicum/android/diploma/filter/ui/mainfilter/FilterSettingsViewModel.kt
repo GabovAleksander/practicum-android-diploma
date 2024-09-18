@@ -62,5 +62,6 @@ class FilterSettingsViewModel(private val filterInteractor: FilterInteractor) : 
             FilterState.Empty
         )
         filterInteractor.clearFilters()
+        filterInteractor.saveFilterToSharedPreferences(filterInteractor.getFilterState())
     }
 }
