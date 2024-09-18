@@ -25,48 +25,32 @@ class ChoosingAPlaceOfWorkFragment : CustomFragment<FragmentChoosingAPlaceOfWork
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.btBackArrow.setOnClickListener {
-            findNavController().popBackStack()
-        }
+        setupClickListeners()
+        setupTextWatchers()
+        observeSelectedCountry()
+        observeSelectedRegion()
+        setupCrossClickListener()
+        setupChooseButtonListener()
+    }
 
-        binding.arrowForwardCountry.setOnClickListener {
-            val action = ChoosingAPlaceOfWorkFragmentDirections.actionChoosingAPlaceOfWorkFragmentToCountryFragment()
-            findNavController().navigate(action)
-        }
+    private fun setupTextWatchers() {
+        binding.edCountry.addTextChangedListener(createTextWatcher { updateCountryInputUi(it) })
+        binding.edRegion.addTextChangedListener(createTextWatcher { updateRegionInputUi(it) })
+    }
 
-        binding.arrowForwardRegion.setOnClickListener {
-            val action = ChoosingAPlaceOfWorkFragmentDirections.actionChoosingAPlaceOfWorkFragmentToAreaSelectFragment()
-            findNavController().navigate(action)
-        }
-
-        binding.edCountry.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // для detect
-            }
+    private fun createTextWatcher(block: (String) -> Unit): TextWatcher {
+        return object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                updateCountryInputUi(s?.toString() ?: "")
+                block(s?.toString() ?: "")
             }
 
-            override fun afterTextChanged(s: Editable?) {
-                // для detect
-            }
-        })
+            override fun afterTextChanged(s: Editable?) {}
+        }
+    }
 
-        binding.edRegion.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // для detect
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                updateRegionInputUi(s?.toString() ?: "")
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                // для detect
-            }
-        })
-
+    private fun observeSelectedCountry() {
         locationViewModel.selectedCountry.observe(viewLifecycleOwner) { country ->
             binding.edCountry.setText(country)
             binding.edCountry.hint = ""
@@ -74,25 +58,15 @@ class ChoosingAPlaceOfWorkFragment : CustomFragment<FragmentChoosingAPlaceOfWork
             isCountryInputFilled = true
             updateChooseBtnVisibility()
         }
+    }
 
+    private fun observeSelectedRegion() {
         locationViewModel.selectedRegion.observe(viewLifecycleOwner) { region ->
             binding.edRegion.setText(region)
             binding.edRegion.hint = ""
             binding.tvRegion.visibility = View.VISIBLE
             isRegionInputFilled = true
             updateChooseBtnVisibility()
-        }
-
-        binding.crossCountry.setOnClickListener {
-            binding.edCountry.setText("")
-        }
-
-        binding.crossRegion.setOnClickListener {
-            binding.edRegion.setText("")
-        }
-
-        binding.btChoose.setOnClickListener {
-            // кнопка выбора-логика подтверждения
         }
     }
 
@@ -114,5 +88,40 @@ class ChoosingAPlaceOfWorkFragment : CustomFragment<FragmentChoosingAPlaceOfWork
 
     private fun updateChooseBtnVisibility() {
         binding.btChoose.visibility = if (isCountryInputFilled && isRegionInputFilled) View.VISIBLE else View.GONE
+    }
+
+    private fun setupClickListeners() {
+        binding.btBackArrow.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        binding.arrowForwardCountry.setOnClickListener {
+            navigateToCountryFragment()
+        }
+
+        binding.arrowForwardRegion.setOnClickListener {
+            navigateToAreaSelectFragment()
+        }
+    }
+
+    private fun navigateToCountryFragment() {
+        val action = ChoosingAPlaceOfWorkFragmentDirections.actionChoosingAPlaceOfWorkFragmentToCountryFragment()
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToAreaSelectFragment() {
+        val action = ChoosingAPlaceOfWorkFragmentDirections.actionChoosingAPlaceOfWorkFragmentToAreaSelectFragment()
+        findNavController().navigate(action)
+    }
+
+    private fun setupCrossClickListener() {
+        binding.crossCountry.setOnClickListener { binding.edCountry.setText("") }
+        binding.crossRegion.setOnClickListener { binding.edRegion.setText("") }
+    }
+
+    private fun setupChooseButtonListener() {
+        binding.btChoose.setOnClickListener {
+            // кнопка выбора-логика подтверждения
+        }
     }
 }
