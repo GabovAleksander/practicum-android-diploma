@@ -1,20 +1,17 @@
 package ru.practicum.android.diploma.filter.domain.api
 
-import ru.practicum.android.diploma.filter.domain.model.Area
-import ru.practicum.android.diploma.filter.domain.model.Country
-import ru.practicum.android.diploma.filter.domain.model.Industry
+import ru.practicum.android.diploma.filter.domain.model.FilterStatus
+import ru.practicum.android.diploma.filter.domain.model.PlaceWork
 
 interface FilterInteractor {
-    fun getCountry(): Country?
-    fun setCountry(country: Country?)
-
-    fun getArea(): Area?
-    fun setArea(area: Area?)
-
-    fun getIndustry(): Industry?
-    fun setIndustry(industry: Industry?)
-
-    fun setOnlyWithSalary(status: Boolean)
+    fun getFilterState(): FilterStatus
+    fun setFilterState(filterState: FilterStatus)
 
     fun clearFilters()
+
+    fun saveFilterToSharedPreferences(filterStatus: FilterStatus)
+    fun loadFilterFromSharedPreferences(): FilterStatus
+
+    fun setListPlaceWork(listPlaceWork: PlaceWork)
+    fun getListPlaceWork(): PlaceWork
 }

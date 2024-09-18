@@ -3,6 +3,8 @@ package ru.practicum.android.diploma.global.util
 import android.content.Context
 import android.util.TypedValue
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.filter.domain.model.Country
+import ru.practicum.android.diploma.filter.domain.model.Location
 import ru.practicum.android.diploma.global.util.Constants.NUMBER_1
 import ru.practicum.android.diploma.global.util.Constants.NUMBER_10
 import ru.practicum.android.diploma.global.util.Constants.NUMBER_2
@@ -72,6 +74,18 @@ object Mapper {
         } else {
             list?.map { it.name }
         }
+    }
+
+    fun getAreasByCountry(locations: List<Location>, countryId: String): List<Location> {
+        return locations
+            .filter {
+                it.country.id == countryId
+            }
+    }
+
+    fun getCountryByAreaId(areaId: String, locations: List<Location>): Country? {
+        val location = locations.find { it.area.id == areaId }
+        return location?.country
     }
 
 }

@@ -2,40 +2,40 @@ package ru.practicum.android.diploma.filter.domain.impl
 
 import ru.practicum.android.diploma.filter.domain.api.FilterInteractor
 import ru.practicum.android.diploma.filter.domain.api.FilterRepository
-import ru.practicum.android.diploma.filter.domain.model.Area
-import ru.practicum.android.diploma.filter.domain.model.Country
-import ru.practicum.android.diploma.filter.domain.model.Industry
+import ru.practicum.android.diploma.filter.domain.model.FilterStatus
+import ru.practicum.android.diploma.filter.domain.model.PlaceWork
+import ru.practicum.android.diploma.global.sharedpreferences.SharedPreferencesFilter
 
-class FilterInteractorImpl(private val repository: FilterRepository) : FilterInteractor {
-    override fun getCountry(): Country? {
-        return repository.getCountry()
+class FilterInteractorImpl(
+    private val repository: FilterRepository,
+    private val sharedPreferencesFilter: SharedPreferencesFilter,
+) : FilterInteractor {
+
+    override fun getFilterState(): FilterStatus {
+        return repository.getFilterStatus()
     }
 
-    override fun setCountry(country: Country?) {
-        repository.setCountry(country)
-    }
-
-    override fun getArea(): Area? {
-        return repository.getArea()
-    }
-
-    override fun setArea(area: Area?) {
-        repository.setArea(area)
-    }
-
-    override fun getIndustry(): Industry? {
-        return repository.getIndustry()
-    }
-
-    override fun setIndustry(industry: Industry?) {
-        repository.setIndustry(industry)
-    }
-
-    override fun setOnlyWithSalary(status: Boolean) {
-        repository.setOnlyWithSalary(status)
+    override fun setFilterState(filterState: FilterStatus) {
+        repository.setFilterStatus(filterState)
     }
 
     override fun clearFilters() {
         repository.clearFilters()
+    }
+
+    override fun saveFilterToSharedPreferences(filterStatus: FilterStatus) {
+        sharedPreferencesFilter.saveFilterState(filterStatus)
+    }
+
+    override fun loadFilterFromSharedPreferences(): FilterStatus {
+        return sharedPreferencesFilter.getFilterState()
+    }
+
+    override fun setListPlaceWork(listPlaceWork: PlaceWork) {
+        repository.setListPlaceWork(listPlaceWork)
+    }
+
+    override fun getListPlaceWork(): PlaceWork {
+        return repository.getListPlaceWork()
     }
 }

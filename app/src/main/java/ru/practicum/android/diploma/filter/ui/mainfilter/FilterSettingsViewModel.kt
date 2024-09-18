@@ -3,50 +3,64 @@ package ru.practicum.android.diploma.filter.ui.mainfilter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import ru.practicum.android.diploma.filter.domain.api.FilterInteractor
+import ru.practicum.android.diploma.filter.domain.model.FilterStatus
 
-class FilterSettingsViewModel : ViewModel() {
-    private val repository = FilterRepository() // пример, наш репозиторий для хранения фильтров
+class FilterSettingsViewModel(private val filterInteractor: FilterInteractor) : ViewModel() {
 
     private val filterSettingsState = MutableLiveData<FilterState>() // для примера сделал filter state
 
     fun getFilterState(): LiveData<FilterState> = filterSettingsState
 
     fun setSalary(salary: Int?) {
-        filterSettingsState.postValue(FilterState.Content(salary = salary))
+        val status = filterInteractor.getFilterState()
+        val filterState = FilterStatus(
+            salary = salary,
+            industry = status.industry,
+            country = status.country,
+            area = status.area,
+            onlyWithSalary = status.onlyWithSalary
+        )
+        filterInteractor.setFilterState(filterState)
+        filterSettingsState.postValue(FilterState.Content(filterState))
     }
 
-    fun setOnlyWithSalary(onlySalary: Boolean?) {
-        filterSettingsState.postValue(FilterState.Content(onlyWithSalary = onlySalary))
+    fun setOnlyWithSalary(onlySalary: Boolean) {
+        val status = filterInteractor.getFilterState()
+        val filterState = FilterStatus(
+            salary = status.salary,
+            industry = status.industry,
+            country = status.country,
+            area = status.area,
+            onlyWithSalary = onlySalary
+        )
+        filterInteractor.setFilterState(filterState)
+        filterSettingsState.postValue(FilterState.Content(filterState))
     }
 
     fun getStateAreaAndIndustry() {
-        val data = repository.getData()
-        /*
-        получаем тут страну город и отрасль, каждый может быть null
-        filterSettingsState.postValue(FilterState.Content(country = country, city = city, industry = industry))
-        вызываем каждый раз при возврате с экрана выбора места работы и выбора отрасли
-         */
+        val data = filterInteractor.getFilterState()
+        if (!data.isDefaultParams()) {
+            filterSettingsState.postValue(FilterState.Content(data))
+        }
     }
 
     fun getSettingsFilter() {
-        // запрос сохраненных данных из sharedPreferences и устанвока в FilterState
+        val prefs = filterInteractor.loadFilterFromSharedPreferences()
+        filterInteractor.setFilterState(prefs)
+        filterSettingsState.postValue(
+            FilterState.Content(prefs)
+        )
     }
 
     fun saveSettingsFilter() {
-        // отправляем настройки в sharedPreferences
+        filterInteractor.saveFilterToSharedPreferences(filterInteractor.getFilterState())
     }
 
     fun resetSettings() {
         filterSettingsState.postValue(
             FilterState.Empty
         )
-
-    }
-
-}
-
-class FilterRepository {
-    fun getData() {
-        // заглушка просто, удалить весь класс
+        filterInteractor.clearFilters()
     }
 }

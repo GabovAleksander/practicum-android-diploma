@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="14dp"
         android:fontFamily="@font/ys_display_regular"
-        android:textColor="?attr/colorSecondary"
+        android:textColor="@color/background_reverse"
         android:textSize="@dimen/text_size_16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/arrowImage"
@@ -29,5 +29,6 @@
         app:layout_constraintBottom_toBottomOf="@id/areaName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/areaName"
-        app:layout_constraintTop_toTopOf="@id/areaName" />
+        app:layout_constraintTop_toTopOf="@id/areaName"
+        app:tint="@color/background_reverse" />
 </androidx.constraintlayout.widget.ConstraintLayout>

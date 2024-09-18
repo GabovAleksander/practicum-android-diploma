@@ -2,6 +2,8 @@ package ru.practicum.android.diploma.search.domain.impl
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import ru.practicum.android.diploma.filter.domain.model.Industry
+import ru.practicum.android.diploma.filter.domain.model.PlaceWork
 import ru.practicum.android.diploma.global.util.RequestResult
 import ru.practicum.android.diploma.search.domain.api.SearchInteractor
 import ru.practicum.android.diploma.search.domain.api.SearchRepository
@@ -26,5 +28,13 @@ class SearchInteractorImpl(private val repository: SearchRepository) : SearchInt
 
     override fun getVacancies(searchQuery: SearchQuery): Flow<RequestResult<VacancyList>> {
         return repository.searchVacancies(searchQuery)
+    }
+
+    override fun getAreas(): Flow<RequestResult<PlaceWork>> {
+        return repository.getAreas()
+    }
+
+    override fun getIndustries(): Flow<RequestResult<List<Industry>>> {
+        return repository.getIndustries()
     }
 }

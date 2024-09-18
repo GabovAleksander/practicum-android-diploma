@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.filter.domain.api.FilterInteractor
+import ru.practicum.android.diploma.filter.domain.model.FilterStatus
 import ru.practicum.android.diploma.global.util.RequestResult
 import ru.practicum.android.diploma.global.util.debounce
 import ru.practicum.android.diploma.search.domain.api.SearchInteractor
@@ -12,7 +14,8 @@ import ru.practicum.android.diploma.search.domain.model.SearchQuery
 import ru.practicum.android.diploma.search.domain.model.Vacancy
 import ru.practicum.android.diploma.search.domain.model.VacancyList
 
-class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewModel() {
+class SearchViewModel(private val searchInteractor: SearchInteractor, private val filterInteractor: FilterInteractor) :
+    ViewModel() {
 
     private val stateLiveData = MutableLiveData<SearchState>(SearchState.EmptyEditText)
     fun observeState(): LiveData<SearchState> = stateLiveData
@@ -22,6 +25,7 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
     private var currentPage: Int = -1
     private var vacanciesFound: Int = 0
     private var isLoading: Boolean = false
+    private var prefs: FilterStatus = FilterStatus(null, null, null, null, false)
 
     private val trackSearchDebounce =
         debounce<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true) { changedText ->
@@ -43,18 +47,28 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
         stateLiveData.postValue(state)
     }
 
+    private fun getSearchQuery(input: String, page: Int): SearchQuery {
+        val isFilterNeed = !prefs.isDefaultParams()
+        return SearchQuery(
+            areaId = if (isFilterNeed) prefs.area?.id else null,
+            industryId = if (isFilterNeed) prefs.industry?.id else null,
+            salary = if (isFilterNeed) prefs.salary else null,
+            onlyWithSalary = if (isFilterNeed) prefs.onlyWithSalary else false,
+            text = input,
+            page = page + 1,
+            perPage = VACANCIES_PER_PAGE
+        )
+    }
+
     fun search(input: String, page: Int) {
         if (input.isNotEmpty()) {
             if (page == 0) {
                 renderState(SearchState.Loading)
             }
+
             viewModelScope.launch {
                 searchInteractor.getVacancies(
-                    SearchQuery(
-                        text = input,
-                        page = page + 1,
-                        perPage = VACANCIES_PER_PAGE
-                    )
+                    getSearchQuery(input, page)
                 )
                     .collect {
                         processResult(result = it)
@@ -93,6 +107,11 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
                 renderState(SearchState.Error(result.error!!, currentPage))
             }
         }
+    }
+
+    fun getSettingsFilter() {
+        // запрос сохраненных данных из sharedPreferences и устанвока в FilterState
+        prefs = filterInteractor.loadFilterFromSharedPreferences()
     }
 
     companion object {

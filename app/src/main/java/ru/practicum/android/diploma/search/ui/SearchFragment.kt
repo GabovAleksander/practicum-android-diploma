@@ -36,6 +36,7 @@ class SearchFragment : CustomFragment<FragmentSearchBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getSettingsFilter()
         binding.vacancyList.adapter = adapter
         binding.vacancyList.setHasFixedSize(false)
         binding.editText.setOnFocusChangeListener { _, hasFocus ->

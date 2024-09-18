@@ -28,23 +28,22 @@ class FilterSettingsFragment : CustomFragment<FragmentFilterSettingsBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // здесь будем запрашивать данные из sharedPreferences при новом открытии фрагмента
         viewModel.getSettingsFilter()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel.getStateAreaAndIndustry()
-
         viewModel.getFilterState().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is FilterState.Content -> renderState(state)
-
-                FilterState.Empty -> renderStateReset()
+                is FilterState.Empty -> renderStateReset()
             }
         }
+        initBinding()
+    }
 
+    private fun initBinding() {
         binding.salaryEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 hideKeyboard()
@@ -73,7 +72,9 @@ class FilterSettingsFragment : CustomFragment<FragmentFilterSettingsBinding>() {
             findNavController().navigate(R.id.action_filterSettingsFragment_to_choosingAPlaceOfWorkFragment)
         }
 
-        binding.btnArrowForwardIndustry.setOnClickListener {}
+        binding.btnArrowForwardIndustry.setOnClickListener {
+            findNavController().navigate(R.id.action_filterSettingsFragment_to_filterIndustryFragment)
+        }
 
         binding.checkOnlySalary.setOnClickListener {
             viewModel.setOnlyWithSalary(binding.checkOnlySalary.isChecked)
@@ -81,12 +82,12 @@ class FilterSettingsFragment : CustomFragment<FragmentFilterSettingsBinding>() {
 
         binding.btnApply.setOnClickListener {
             viewModel.saveSettingsFilter()
+            findNavController().popBackStack()
         }
 
         binding.btnReset.setOnClickListener {
             viewModel.resetSettings()
         }
-
     }
 
     private fun renderStateReset() {
@@ -94,6 +95,8 @@ class FilterSettingsFragment : CustomFragment<FragmentFilterSettingsBinding>() {
             setTextPlaceWork(country = null, city = null)
             setTextIndustry(industry = null)
             salaryEditText.text = null
+            editTextPlaceWork.isActivated = false
+            editTextIndustry.isActivated = false
             checkOnlySalary.isChecked = false
             btnReset.isVisible = false
             btnApply.isVisible = false
@@ -102,25 +105,18 @@ class FilterSettingsFragment : CustomFragment<FragmentFilterSettingsBinding>() {
 
     private fun renderState(data: FilterState.Content) {
         with(binding) {
-            checkOnlySalary.isChecked = data.onlyWithSalary ?: false
+            checkOnlySalary.isChecked = data.filterStatus.onlyWithSalary
 
-            data.salary?.let { salaryEditText.setText(it) }
+            data.filterStatus.salary?.let { salaryEditText.setText(it.toString()) }
 
-            data.industry?.let { setTextIndustry(it) }
+            data.filterStatus.industry?.name?.let { setTextIndustry(it) }
 
-            if (data.city != null || data.country != null) {
-                setTextPlaceWork(data.country, data.city)
+            if (data.filterStatus.area != null || data.filterStatus.country != null) {
+                setTextPlaceWork(data.filterStatus.country?.name, data.filterStatus.area?.name)
             }
 
-            val isFilterSet = listOf(
-                data.onlyWithSalary,
-                data.salary,
-                data.city,
-                data.country,
-                data.industry
-            ).any { it != null }
-            btnReset.isVisible = isFilterSet
-            btnApply.isVisible = isFilterSet
+            btnReset.isVisible = !data.filterStatus.isDefaultParams()
+            btnApply.isVisible = !data.filterStatus.isDefaultParams()
         }
     }
 
@@ -132,8 +128,8 @@ class FilterSettingsFragment : CustomFragment<FragmentFilterSettingsBinding>() {
                 !city.isNullOrEmpty() -> city
                 else -> null
             }
-            editTextIndustry.setText(placeWorkText)
-            editTextIndustry.isActivated = true
+            editTextPlaceWork.setText(placeWorkText)
+            editTextPlaceWork.isActivated = true
         }
     }
 

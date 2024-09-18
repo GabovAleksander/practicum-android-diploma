@@ -6,10 +6,8 @@ sealed interface CountryState {
     data object Loading : CountryState
 
     data class Content(
-        val region: List<Country>
+        val region: List<Country>,
     ) : CountryState
 
-    data class Error(
-        val errorMessage: Int
-    ) : CountryState
+    data class Error(val error: Int) : CountryState
 }
