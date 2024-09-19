@@ -5,18 +5,22 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.filter.domain.api.FilterInteractor
 
-class LocationViewModel : ViewModel() {
+class LocationViewModel(
+    private val filterInteractor: FilterInteractor,
+) : ViewModel() {
+
     private val _selectedCountry = MutableLiveData<String>()
     val selectedCountry: LiveData<String> = _selectedCountry
 
     private val _selectedRegion = MutableLiveData<String>()
     val selectedRegion: LiveData<String> = _selectedRegion
 
-    private val _countries = MutableLiveData<List<String>>() // Список стран
-    val countries: LiveData<List<String>> get() = _countries
+    private val _countries = MutableLiveData<List<String>?>()
+    val countries: LiveData<List<String>?> get() = _countries
 
-    private val _regions = MutableLiveData<List<String>>() // Список регионов
+    private val _regions = MutableLiveData<List<String>>()
     val regions: LiveData<List<String>> get() = _regions
 
     private val _errorState = MutableLiveData<String?>()
@@ -28,8 +32,14 @@ class LocationViewModel : ViewModel() {
 
     private fun loadCountries() {
         viewModelScope.launch {
-//            val countries = listOf("Russia", "China", "USA")
-//            _countries.postValue(countries)
+            val countries = filterInteractor.getListPlaceWork().countries?.map { it.name }
+            if (countries != null) {
+                if (countries.isNotEmpty()) {
+                    _countries.postValue(countries)
+                } else {
+                    _errorState.postValue("Failed to load countries")
+                }
+            }
         }
     }
 

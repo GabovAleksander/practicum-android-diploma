@@ -43,7 +43,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/cardFavouriteItem"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Разработчик на С++ в команду внутренних сервисов, Москвааааааааааааааааааааааааааааааааааааааааааааааааааааааааааааааааааааааааа" />
+        tools:text="@string/vacancy_and_city" />
 
     <TextView
         android:id="@+id/tv_employer_name"

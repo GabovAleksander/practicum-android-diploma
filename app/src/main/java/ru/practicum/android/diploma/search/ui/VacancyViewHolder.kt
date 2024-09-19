@@ -13,10 +13,10 @@ import ru.practicum.android.diploma.search.domain.model.Vacancy
 
 class VacancyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    private val ivCompanyCover: ImageView = itemView.findViewById(R.id.ivCompanyCover)
-    private val vacancyAndCity: TextView = itemView.findViewById(R.id.vacancyAndCity)
-    private val companyName: TextView = itemView.findViewById(R.id.companyName)
-    private val salary: TextView = itemView.findViewById(R.id.salary)
+    private val ivCompanyCover: ImageView = itemView.findViewById(R.id.ivCompany)
+    private val vacancyAndCity: TextView = itemView.findViewById(R.id.tvVacancyName)
+    private val companyName: TextView = itemView.findViewById(R.id.tv_employer_name)
+    private val salary: TextView = itemView.findViewById(R.id.tv_salary)
 
     fun bind(vacancy: Vacancy) {
         vacancyAndCity.text = "${vacancy.name}, ${vacancy.area}"

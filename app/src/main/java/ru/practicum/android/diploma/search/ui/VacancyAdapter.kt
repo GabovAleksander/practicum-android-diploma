@@ -15,7 +15,7 @@ class VacancyAdapter(
         parent: ViewGroup,
         viewType: Int,
     ): VacancyViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.vacancy_list_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.vacancy_item, parent, false)
         return VacancyViewHolder(view)
     }
 
