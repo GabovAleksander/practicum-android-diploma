@@ -1,13 +1,11 @@
 package ru.practicum.android.diploma.filter.ui.mainfilter
 
-import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
@@ -16,6 +14,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterSettingsBinding
 import ru.practicum.android.diploma.global.util.CustomFragment
+import ru.practicum.android.diploma.global.util.HideKeyboardUtil
 import ru.practicum.android.diploma.global.util.debounce
 
 class FilterSettingsFragment : CustomFragment<FragmentFilterSettingsBinding>() {
@@ -66,7 +65,7 @@ class FilterSettingsFragment : CustomFragment<FragmentFilterSettingsBinding>() {
 
         binding.salaryEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                hideKeyboard()
+                view?.let { view -> HideKeyboardUtil.hideKeyboard(view) }
                 binding.salaryInputLayout.clearFocus()
                 true
             } else {
@@ -77,7 +76,7 @@ class FilterSettingsFragment : CustomFragment<FragmentFilterSettingsBinding>() {
         binding.btnResetSalary.setOnClickListener {
             viewModel.setSalary(null)
             binding.salaryEditText.clearFocus()
-            hideKeyboard()
+            view?.let { view -> HideKeyboardUtil.hideKeyboard(view) }
         }
     }
 
@@ -87,21 +86,16 @@ class FilterSettingsFragment : CustomFragment<FragmentFilterSettingsBinding>() {
         }
         binding.btnArrowForwardPlace.setOnClickListener {
             if (!filterHasPlacework) {
-                findNavController().navigate(
-                    R.id.action_filterSettingsFragment_to_choosingAPlaceOfWorkFragment
-                )
+                findNavController().navigate(R.id.action_filterSettingsFragment_to_choosingAPlaceOfWorkFragment)
             } else {
                 filterIsChanged = true
                 viewModel.resetPlaceWorkFilter()
                 renderStateResetPlacework()
             }
         }
-
         binding.btnArrowForwardIndustry.setOnClickListener {
             if (!filterHasIndustry) {
-                findNavController().navigate(
-                    R.id.action_filterSettingsFragment_to_filterIndustryFragment
-                )
+                findNavController().navigate(R.id.action_filterSettingsFragment_to_filterIndustryFragment)
             } else {
                 filterIsChanged = true
                 viewModel.resetIndustryFilter()
@@ -205,11 +199,6 @@ class FilterSettingsFragment : CustomFragment<FragmentFilterSettingsBinding>() {
             editTextIndustry.setText(industry)
             editTextIndustry.isActivated = true
         }
-    }
-
-    private fun hideKeyboard() {
-        val inputManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputManager.hideSoftInputFromWindow(binding.salaryInputLayout.windowToken, 0)
     }
 
     private fun setColorState(hasText: Boolean): ColorStateList {

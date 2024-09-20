@@ -31,24 +31,24 @@
         android:id="@+id/PlaceWorkLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_40dp"
         android:hint="@string/place_of_work"
         android:textColorHint="@color/text_hint_for_text_input_layout"
         app:boxStrokeWidth="0dp"
         app:boxStrokeWidthFocused="0dp"
-        app:layout_constraintBottom_toBottomOf="@id/btnArrowForwardPlace"
-        app:layout_constraintEnd_toStartOf="@+id/btnArrowForwardPlace"
+        app:layout_constraintEnd_toStartOf="@id/btnArrowForwardPlace"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/btnArrowForwardPlace">
+        app:layout_constraintTop_toBottomOf="@id/btnBack">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextPlaceWork"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/size_60dp"
             android:background="@android:color/transparent"
             android:clickable="false"
             android:cursorVisible="false"
             android:focusable="false"
+            android:minHeight="@dimen/size_60dp"
             android:paddingStart="0dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -56,36 +56,36 @@
         android:id="@+id/btnArrowForwardPlace"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_40dp"
         android:foreground="?attr/selectableItemBackgroundBorderless"
         android:paddingVertical="@dimen/size_18dp"
         android:paddingStart="@dimen/size_24dp"
         android:src="@drawable/ic_arrow_forward_24px"
+        app:layout_constraintBottom_toBottomOf="@id/PlaceWorkLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnBack"
+        app:layout_constraintTop_toTopOf="@id/PlaceWorkLayout"
         app:tint="@color/background_reverse" />
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/industryLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/industry"
         android:textColorHint="@color/text_hint_for_text_input_layout"
         app:boxStrokeWidth="0dp"
         app:boxStrokeWidthFocused="0dp"
-        app:layout_constraintBottom_toBottomOf="@id/btnArrowForwardIndustry"
-        app:layout_constraintEnd_toStartOf="@id/btnArrowForwardIndustry"
+        app:layout_constraintEnd_toEndOf="@id/btnArrowForwardIndustry"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/btnArrowForwardIndustry">
+        app:layout_constraintTop_toBottomOf="@id/PlaceWorkLayout">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextIndustry"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/size_60dp"
             android:background="@android:color/transparent"
             android:clickable="false"
             android:cursorVisible="false"
             android:focusable="false"
+            android:minHeight="@dimen/size_60dp"
             android:paddingStart="0dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -97,8 +97,9 @@
         android:paddingVertical="@dimen/size_18dp"
         android:paddingStart="@dimen/size_24dp"
         android:src="@drawable/ic_arrow_forward_24px"
+        app:layout_constraintBottom_toBottomOf="@id/industryLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/PlaceWorkLayout"
+        app:layout_constraintTop_toTopOf="@id/industryLayout"
         app:tint="@color/background_reverse" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -114,28 +115,28 @@
         app:expandedHintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnArrowForwardIndustry">
+        app:layout_constraintTop_toBottomOf="@id/industryLayout">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/salaryEditText"
             style="@style/inputEditText"
-            android:maxLength="9"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/enter_the_amount"
-            android:inputType="number" />
+            android:inputType="number"
+            android:maxLength="9" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <ImageView
         android:id="@+id/btnResetSalary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:src="@drawable/ic_close_24px"
         android:layout_marginEnd="@dimen/margin_16dp"
+        android:src="@drawable/ic_close_24px"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/salaryInputLayout"
         app:layout_constraintEnd_toEndOf="@id/salaryInputLayout"
-        app:layout_constraintTop_toTopOf="@id/salaryInputLayout"
-        app:layout_constraintBottom_toBottomOf="@id/salaryInputLayout" />
+        app:layout_constraintTop_toTopOf="@id/salaryInputLayout" />
 
     <TextView
         android:id="@+id/txtOnlySalary"
